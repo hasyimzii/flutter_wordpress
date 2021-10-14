@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'views/splash_screen.dart';
-import 'views/blog_list.dart';
+import 'view/splash_screen.dart';
+import 'view/blog_list.dart';
 
 void main() {
   runApp(const MyApp());
