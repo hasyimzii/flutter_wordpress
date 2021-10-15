@@ -3,4 +3,4 @@
 ### Anggota
  - Muhammad Hasyim Asy'ari
  - Muhammad Rizqi Hidayat
- - Federicho Madi
+ - Federicho Alexander Madi
