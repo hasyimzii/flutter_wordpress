@@ -3,11 +3,14 @@ import 'package:provider/provider.dart';
 
 import 'network/api_login.dart';
 import 'network/api_post.dart';
+import 'network/api_search.dart';
 import 'provider/login_provider.dart';
 import 'provider/post_provider.dart';
+import 'provider/search_provider.dart';
 import 'view/splash_screen.dart';
 import 'view/blog_list.dart';
 import 'view/login_page.dart';
+import 'view/blog_search.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +34,11 @@ class MyApp extends StatelessWidget {
             apiLogin: ApiLogin(),
           ),
         ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => SearchProvider(
+            apiSearch: ApiSearch(),
+          ),
+        ),
       ],
       builder: (
         BuildContext context,
@@ -46,6 +54,7 @@ class MyApp extends StatelessWidget {
             '/splash_screen': (context) => const SplashScreen(),
             '/blog_list': (context) => const BlogList(),
             '/login_page': (context) => const LoginPage(),
+            '/blog_search': (context) => const BlogSearch(),            
           },
         );
       },
