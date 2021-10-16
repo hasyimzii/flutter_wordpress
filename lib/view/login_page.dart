@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,11 +46,12 @@ class LoginPage extends StatelessWidget {
                 icon: Icons.send,
                 onTap: () {
                   // validate form
-                    if (!(_formKey.currentState?.validate() ?? false)) return;
-                    // get provider read
-                    LoginProvider provider = context.read<LoginProvider>();
-                    provider.getLogin(username.text, password.text);
-                    Navigator.pop(context);
+                  if (!(_formKey.currentState?.validate() ?? false)) return;
+                  // get provider read
+                  LoginProvider provider = context.read<LoginProvider>();
+                  provider.getLogin(username.text, password.text);
+                  // navigate back
+                  Navigator.pop(context);
                 },
               ),
             ],
