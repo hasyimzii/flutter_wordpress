@@ -1,28 +1,28 @@
 import 'package:flutter/cupertino.dart';
-import '../model/post_model.dart';
-import '../network/api_post.dart';
+import '../model/search_model.dart';
+import '../network/api_search.dart';
 import '../utils/result_state.dart';
 
-class PostProvider extends ChangeNotifier {
-  final ApiPost? apiPost;
+class SearchProvider extends ChangeNotifier {
+  final ApiSearch? apiSearch;
 
-  PostProvider({required this.apiPost}) {
+  SearchProvider({required this.apiSearch}) {
     _fetchAllPost();
   }
 
-  List<PostModel>? _postModel;
+  List<SearchModel>? _searchModel;
   String _message = "";
   ResultState? _state;
 
   String get message => _message;
-  List<PostModel> get postResult => _postModel!;
+  List<SearchModel> get postResult => _searchModel!;
   ResultState get state => _state!;
 
   Future<dynamic> _fetchAllPost() async {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final post = await apiPost!.getAllPost();
+      final post = await apiSearch!.search();
       if (post.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
@@ -30,7 +30,7 @@ class PostProvider extends ChangeNotifier {
       } else {
         _state = ResultState.HasData;
         notifyListeners();
-        return _postModel = post;
+        return _searchModel = post;
       }
     } catch (e) {
       _state = ResultState.Error;
