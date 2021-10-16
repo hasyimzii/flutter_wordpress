@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/login_provider.dart';
 import '../widget/scaffold_theme.dart';
 import '../widget/text_field_input.dart';
 import '../widget/submit_button.dart';
@@ -42,7 +45,14 @@ class LoginPage extends StatelessWidget {
               SubmitButton(
                 title: 'Login',
                 icon: Icons.send,
-                onTap: () {},
+                onTap: () {
+                  // validate form
+                    if (!(_formKey.currentState?.validate() ?? false)) return;
+                    // get provider read
+                    LoginProvider provider = context.read<LoginProvider>();
+                    provider.getLogin(username.text, password.text);
+                    Navigator.pop(context);
+                },
               ),
             ],
           ),

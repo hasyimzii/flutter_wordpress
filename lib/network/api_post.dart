@@ -1,8 +1,8 @@
 import 'dart:convert';
-
-import 'package:flutter_wordpress/config/constant.dart';
-import 'package:flutter_wordpress/model/post_model.dart';
 import 'package:http/http.dart' as http;
+
+import '../config/constant.dart';
+import '../model/post_model.dart';
 
 class ApiPost {
   static final List<PostModel> listPost = [];

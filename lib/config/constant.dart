@@ -1,4 +1,9 @@
 class Constant {
   static const String baseUrl = 'https://gits-msib.my.id/wp-json';
-  static const String loginToken = '';
+  static String _loginToken = '';
+
+  String get token => _loginToken;
+  void setToken(token) {
+    _loginToken = token;
+  }
 }

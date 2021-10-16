@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_wordpress/model/post_model.dart';
-import 'package:flutter_wordpress/network/api_post.dart';
-import 'package:flutter_wordpress/utils/result_state.dart';
+import '../model/post_model.dart';
+import '../network/api_post.dart';
+import '../utils/result_state.dart';
 
 class PostProvider extends ChangeNotifier {
   final ApiPost? apiPost;

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wordpress/model/post_model.dart';
-import 'package:flutter_wordpress/provider/post_provider.dart';
-import 'package:flutter_wordpress/utils/result_state.dart';
-import 'package:flutter_wordpress/widget/card_post.dart';
 import 'package:provider/provider.dart';
 
-import '../widget/scaffold_theme.dart';
+import '../provider/post_provider.dart';
+import '../provider/login_provider.dart';
+import '../utils/result_state.dart';
+import '../widget/card_post.dart';
 
 class BlogList extends StatefulWidget {
   const BlogList({Key? key}) : super(key: key);
@@ -20,11 +19,39 @@ class _BlogListState extends State<BlogList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Post Blog Gits"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              child: const Icon(Icons.search),
+              onTap: () {},
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Consumer<LoginProvider>(
+        builder: (
+          BuildContext context,
+          LoginProvider login,
+          Widget? child,
+        ) {
+          bool logged = login.getToken();
+          return FloatingActionButton.extended(
+            icon: (logged) ? const Icon(Icons.logout) : const Icon(Icons.login),
+            label: (logged) ? const Text('Logout') : const Text('Login'),
+            onPressed: () {
+              // if logged remove token
+              (logged)
+                  ? login.logout()
+                  : Navigator.pushNamed(context, '/login_page');
+            },
+          );
+        },
       ),
       body: Consumer<PostProvider>(
         builder: (context, provider, child) {
           if (provider.state == ResultState.Loading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (provider.state == ResultState.HasData) {
