@@ -7,22 +7,28 @@ class SearchProvider extends ChangeNotifier {
   final ApiSearch? apiSearch;
 
   SearchProvider({required this.apiSearch}) {
-    _fetchAllPost();
+    _fetchSearchPost();
   }
 
   List<SearchModel>? _searchModel;
   String _message = "";
   ResultState? _state;
+  String name = '';
 
   String get message => _message;
   List<SearchModel> get postResult => _searchModel!;
   ResultState get state => _state!;
 
-  Future<dynamic> _fetchAllPost() async {
+  void setName(String value) {
+    this.name = value;
+    _fetchSearchPost();
+  }
+
+  Future<dynamic> _fetchSearchPost() async {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final post = await apiSearch!.search();
+      final post = await apiSearch!.search(name);
       if (post.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
