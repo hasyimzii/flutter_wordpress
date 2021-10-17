@@ -20,7 +20,8 @@ class SearchProvider extends ChangeNotifier {
   ResultState get state => _state!;
 
   void setName(String value) {
-    this.name = value;
+    name = value;
+    notifyListeners();
     _fetchSearchPost();
   }
 
