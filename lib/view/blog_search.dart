@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wordpress/model/search_model.dart';
+import 'package:flutter_wordpress/network/api_search.dart';
 import 'package:flutter_wordpress/provider/search_provider.dart';
 import 'package:flutter_wordpress/utils/result_state.dart';
 import 'package:flutter_wordpress/widget/card_post.dart';
@@ -20,7 +21,7 @@ class _BlogSearchState extends State<BlogSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Seacrh"),
+        title: const Text("Search"),
       ),
       body: SingleChildScrollView(
         child: Stack(
@@ -32,18 +33,18 @@ class _BlogSearchState extends State<BlogSearch> {
                     builder: (context, provider, child) {
                   return Column(
                     children: [
-                      TextFormField(
+                      TextField(
                         controller: _searchController,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                           labelText: 'Searching',
-                          suffixStyle: TextStyle(color: Colors.grey),
+                          suffixStyle: const TextStyle(color: Colors.grey),
                           suffixIcon: IconButton(
                             onPressed: () {
                               provider.setName(_searchController.text);
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.search,
                             ),
                           ),
@@ -51,7 +52,7 @@ class _BlogSearchState extends State<BlogSearch> {
                       ),
                       Container(
                         width: double.infinity,
-                        child: _buildList(provider),
+                        child: _buildList(),
                       ),
                     ],
                   );
@@ -64,36 +65,37 @@ class _BlogSearchState extends State<BlogSearch> {
     );
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  _buildList(SearchProvider provider) {
-    if (provider.state == ResultState.Loading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    } else if (provider.state == ResultState.HasData) {
-      return _searchController.text.isEmpty
-          ? Center(
-              child: Text("Cari Blog anda..."),
-            )
-          : _postCard(provider.postResult);
-    } else if (provider.state == ResultState.NoData) {
-      return Center(
-        child: Text(provider.message),
-      );
-    } else if (provider.state == ResultState.Error) {
-      return Center(
-        child: Text(provider.message),
-      );
-    } else {
-      return Center(
-        child: Text(""),
-      );
-    }
+  Widget _buildList() {
+    return Consumer<SearchProvider>(
+      builder: (context, state, _) {
+        if (state.state == ResultState.Loading) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (state.state == ResultState.HasData) {
+          return _searchController.text.isEmpty
+              ? const Center(
+                  child: Text("Cari Blog anda..."),
+                )
+              : _postCard(state.postResult);
+        } else if (state.state == ResultState.NoData) {
+          return Center(
+            child: Text(state.message),
+          );
+        } else if (state.state == ResultState.Error) {
+          return Center(
+            child: Text(state.message),
+          );
+        } else {
+          return const Center(
+            child: Text(""),
+          );
+        }
+      },
+    );
   }
 
   Widget _postCard(List<SearchModel> postResult) {
@@ -101,7 +103,7 @@ class _BlogSearchState extends State<BlogSearch> {
         children: postResult
             .map(
               (e) => Padding(
-                padding: EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.only(top: 8),
                 child: Container(
                   width: double.infinity,
                   child: SearchCardPost(searchModel: e),
@@ -109,5 +111,11 @@ class _BlogSearchState extends State<BlogSearch> {
               ),
             )
             .toList());
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }

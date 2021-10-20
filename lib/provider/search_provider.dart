@@ -4,7 +4,7 @@ import '../network/api_search.dart';
 import '../utils/result_state.dart';
 
 class SearchProvider extends ChangeNotifier {
-  final ApiSearch? apiSearch;
+  final ApiSearch apiSearch;
 
   SearchProvider({required this.apiSearch}) {
     _fetchSearchPost();
@@ -20,8 +20,7 @@ class SearchProvider extends ChangeNotifier {
   ResultState get state => _state!;
 
   void setName(String value) {
-    name = value;
-    notifyListeners();
+    this.name = value;
     _fetchSearchPost();
   }
 
@@ -29,7 +28,8 @@ class SearchProvider extends ChangeNotifier {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final post = await apiSearch!.search(name);
+      final post = await apiSearch.search(name);
+      print(post.first.title);
       if (post.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
@@ -42,7 +42,9 @@ class SearchProvider extends ChangeNotifier {
     } catch (e) {
       _state = ResultState.Error;
       notifyListeners();
-      return _message = "Error to get data from API";
+      return _message = "$e";
+      // return _message =
+      //     "Error to get data from API, please check your connection";
     }
   }
 }
